@@ -16,7 +16,7 @@ function print_help
 	local PREFIX=$2
 	local COMMAND_PREFIX=$3
 
-	local FIND_PATTERN="'${COMMAND_PREFIX}*.sh'"
+	local FIND_PATTERN="'${COMMAND_PREFIX}*.*'"
 	local AXT_FILES=(`eval find ${AXT_PATH} -name ${FIND_PATTERN} -print`)
 
 	if [[ ${AXT_FILES} ]]; then
@@ -27,25 +27,30 @@ function print_help
 		local NUM_AXT_FILES=${#AXT_FILES[@]}
 		while (( FILE_INDEX < NUM_AXT_FILES )); do
 			local AXT_FILE=${AXT_FILES[${FILE_INDEX}]}
-			if [[ ! ${AXT_FILE} =~ .*${COMMAND_PREFIX}.*-.*\.sh ]]; then
-				local HELP_LINE=$(grep '^# HELP: ' ${AXT_FILE} | head -1)
-				if [[ ${HELP_LINE} ]]; then
-					local HELP_TEXT="${HELP_LINE#\# HELP: }"
-					if [[ ${HELP_TEXT} ]]; then
-						local BASENAME="$(basename ${AXT_FILE} .sh)"
-						local SUBCOMMAND="${BASENAME##*-}"
-						local SUBCOMMAND_LEN=${#SUBCOMMAND}
-						local SUBCOMMANDS+=("${SUBCOMMAND}")
-						local SUBCOMMANDS_HELP+=("${HELP_TEXT}")
-						if (( MAX_SUBCOMMAND_LEN < SUBCOMMAND_LEN )); then	
-							local MAX_SUBCOMMAND_LEN=${SUBCOMMAND_LEN}
-						fi
-					else
-						WARNINGS+=("axt subcommand '${AXT_FILE}' has empty help.")
+			if [[ ! ${AXT_FILE} =~ .*${COMMAND_PREFIX}.*-.*\..* ]]; then
+				local HELP_TEXT=""
+				local BASENAME=""
+				if [[ ${AXT_FILE} =~ .*\.sh ]]; then
+					local HELP_LINE=$(grep '^# HELP: ' ${AXT_FILE} | head -1)
+					if [[ ${HELP_LINE} ]]; then
+						HELP_TEXT="${HELP_LINE#\# HELP: }"
+						BASENAME="$(basename ${AXT_FILE} .sh)"
+					fi
+				elif [[ ${AXT_FILE} =~ .*\.txt ]]; then
+					HELP_TEXT=$(head -n 1 ${AXT_FILE})
+					BASENAME="$(basename ${AXT_FILE} .txt)"
+				fi
+				if [[ ${HELP_TEXT} ]]; then
+					local SUBCOMMAND="${BASENAME##*-}"
+					local SUBCOMMAND_LEN=${#SUBCOMMAND}
+					local SUBCOMMANDS+=("${SUBCOMMAND}")
+					local SUBCOMMANDS_HELP+=("${HELP_TEXT}")
+					if (( MAX_SUBCOMMAND_LEN < SUBCOMMAND_LEN )); then	
+						local MAX_SUBCOMMAND_LEN=${SUBCOMMAND_LEN}
 					fi
 				else
-					WARNINGS+=("axt subcommand '${AXT_FILE}' has no help tag.")
-				fi 
+					WARNINGS+=("axt subcommand '${AXT_FILE}' has empty help.")
+				fi
 			fi
 			((FILE_INDEX++))
 		done
@@ -72,11 +77,13 @@ function print_help
 
 COMMAND=""
 COMMAND_PREFIX="axt"
+LAST_SUBCOMMAND=""
 
 if (( 0 < $# )); then
 	while (( 0 < $# )); do
 		COMMAND+="${COMMAND} ${1}"
 		COMMAND_PREFIX="${COMMAND_PREFIX}-${1}"
+		LAST_SUBCOMMAND="${1}"
 		shift
 	done
 else	
@@ -106,7 +113,13 @@ if (( 0 < NUM_SUBCOMMANDS )); then
 	fi
 else
 	if [[ ${COMMAND} ]]; then
-		echo "AXT ERROR: No help found for ${COMMAND}."
+		FIND_PATTERN="axt-help-${LAST_SUBCOMMAND}.txt"
+		AXT_FILES=(`eval find ${AXT_PATH} -name ${FIND_PATTERN} -print`)
+		if [[ ${AXT_FILES} ]]; then
+			less -F ${AXT_FILES[0]}
+		else
+			echo "AXT ERROR: No help found for${COMMAND}."
+		fi
 	else
 		echo "AXT_ERROR: No help found."
 	fi
