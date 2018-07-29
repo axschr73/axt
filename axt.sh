@@ -21,7 +21,7 @@ COMMAND="axt-${SUBCOMMAND}.sh"
 FULL_COMMAND=$(find ${AXTPATH} -name ${COMMAND} -print)
 
 if [[ ${FULL_COMMAND} ]]; then
-	eval ${FULL_COMMAND}
+	eval "${FULL_COMMAND} $@"
 else
 	echo "axt: Unknown command '${SUBCOMMAND}'"
 fi
