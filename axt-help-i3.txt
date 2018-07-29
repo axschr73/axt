@@ -1,4 +1,0 @@
-Help about i3 interface
-
-<WIN>+Space - dmenu
-
