@@ -1,2 +1,3 @@
 # AXT environment
 
+export AXT_EDITOR=${EDITOR}

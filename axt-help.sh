@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/sh
 
 # HELP: Print this help text
 
@@ -130,4 +130,3 @@ for WARNING in "${WARNINGS[@]}"
 do :
 	echo "AXT WARNING: ${WARNING}"
 done
-

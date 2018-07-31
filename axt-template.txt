@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# HELP: <add short help text (one line)>
+# USAGE: <add usage in format axt <command> ... if your command needs paramters. Otherwise, delete this line>
+
+# check if we're in AXT environment
+if [[ ! -v AXT_PATH ]]; then
+	echo "Please execute from axt.sh"
+	exit
+fi
+
+<YOUR CODE GOES HERE>

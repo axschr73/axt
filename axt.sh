@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/sh
 
 # setup environment
 cd $(dirname $0)
