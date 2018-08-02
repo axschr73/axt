@@ -4,8 +4,11 @@
 cd $(dirname $0)
 export AXT_PATH=$(pwd)
 
-source ${AXT_PATH}/.axtrc
-
+# source .axtrc's
+AXT_RCS=$(find ${AXTPATH} -name .axtrc -print)
+for AXT_RC in "${AXT_RCS[@]}"; do
+	source ${AXT_RC}
+done
 
 # process subcommand
 SUBCOMMAND=$1
@@ -14,7 +17,6 @@ shift
 if [[ -z $SUBCOMMAND ]]; then
     SUBCOMMAND="help"
 fi
-
 
 # execute full command
 COMMAND="axt-${SUBCOMMAND}.sh"
