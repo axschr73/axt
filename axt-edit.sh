@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# HELP: Create a new AXT command
-# USAGE: axt create [directory/] command
+# HELP: Edit an existing AXT command or file (see subcommands)
+# USAGE: axt edit command|file
 
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]]; then
@@ -10,27 +10,19 @@ if [[ ! -v AXT_PATH ]]; then
 fi
 
 if (( $# == 1 )); then
-	COMMAND_PATH="${AXT_PATH}"
-	COMMAND=$1
-	if [[ $COMMAND =~ .*/.* ]]; then
-		COMMAND_PATH="${COMMAND_PATH}/${COMMAND%%/*}"
-		COMMAND="${COMMAND##*/}"
-	fi
-
-	FULLNAME="${COMMAND_PATH}/axt-${COMMAND}.sh" 
-
-	if [ ! -f ${FULLNAME} ]; then
-		if [ ! -d ${COMMAND_PATH} ]; then
-			mkdir ${COMMAND_PATH}
-		fi
-
-		cp ${AXT_PATH}/axt-template.txt ${FULLNAME}
-		chmod +x ${FULLNAME}
-
-		eval "${AXT_EDITOR} ${FULLNAME}"
+	COMMAND="axt-${1}.sh"
+	COMMAND_FILES=(`eval find ${AXT_PATH} -name ${COMMAND} -print`)
+	if ((${#COMMAND_FILES[@]} == 1 )); then
+		eval ${AXT_EDITOR} ${COMMAND_FILES[0]}
 	else
-		echo "AXT ERROR: command ${1} already exists"
+ 		COMMAND="axt-edit-${1}.sh"
+		COMMAND_FILES=(`eval find ${AXT_PATH} -name ${COMMAND} -print`)
+		if ((${#COMMAND_FILES[@]} == 1 )); then
+			eval ${COMMAND_FILES[0]}
+		else
+			echo "AXT ERROR: command 'edit ${1}' not found."
+		fi
 	fi
 else
-	echo "AXT ERROR: You need to enter a name for the AXT command you want to create."
+	echo "AXT ERROR: edit needs an argument"
 fi
