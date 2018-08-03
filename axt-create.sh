@@ -24,7 +24,7 @@ if (( $# == 1 )); then
 			mkdir ${COMMAND_PATH}
 		fi
 
-		cp ${AXT_PATH}/axt-template.txt ${FULLNAME}
+		cp ${AXT_PATH}/axt-template ${FULLNAME}
 		chmod +x ${FULLNAME}
 
 		eval "${AXT_EDITOR} ${FULLNAME}"
