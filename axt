@@ -6,7 +6,7 @@ export AXT_PATH=$(pwd)
 
 
 # check installed helpers
-command -v pleco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'pleco'. Some subcommands might not work without it!" }
+command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'peco'. Some subcommands might not work without it!"; }
 
 
 # source .axtrc's
