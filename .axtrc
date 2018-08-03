@@ -3,4 +3,4 @@
 
 export AXT_BRANCH=master  # AXT branch on github
 
-AXT_EDITOR=${EDITOR}  # AXT's preferred editor
+export AXT_EDITOR=${EDITOR}  # AXT's preferred editor
