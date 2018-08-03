@@ -4,11 +4,17 @@
 cd $(dirname $0)
 export AXT_PATH=$(pwd)
 
+
+# check installed helpers
+command -v pleco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'pleco'. Some subcommands might not work without it!" }
+
+
 # source .axtrc's
 AXT_RCS=$(find ${AXTPATH} -name .axtrc -print)
 for AXT_RC in "${AXT_RCS[@]}"; do
 	source ${AXT_RC}
 done
+
 
 # process subcommand
 SUBCOMMAND=$1
@@ -17,6 +23,7 @@ shift
 if [[ -z $SUBCOMMAND ]]; then
     SUBCOMMAND="help"
 fi
+
 
 # execute full command
 COMMAND="axt-${SUBCOMMAND}.sh"
@@ -27,4 +34,3 @@ if [[ ${FULL_COMMAND} ]]; then
 else
 	echo "axt: Unknown command '${SUBCOMMAND}'"
 fi
-
