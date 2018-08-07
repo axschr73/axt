@@ -43,10 +43,10 @@ function print_help
 				if [[ ${HELP_TEXT} ]]; then
 					local SUBCOMMAND="${BASENAME##*-}"
 					local SUBCOMMAND_LEN=${#SUBCOMMAND}
-					local SUBCOMMANDS+=("${SUBCOMMAND}")
-					local SUBCOMMANDS_HELP+=("${HELP_TEXT}")
+					SUBCOMMANDS+=("${SUBCOMMAND}")
+					SUBCOMMANDS_HELP+=("${HELP_TEXT}")
 					if (( MAX_SUBCOMMAND_LEN < SUBCOMMAND_LEN )); then	
-						local MAX_SUBCOMMAND_LEN=${SUBCOMMAND_LEN}
+						MAX_SUBCOMMAND_LEN=${SUBCOMMAND_LEN}
 					fi
 				else
 					WARNINGS+=("axt subcommand '${AXT_FILE}' has empty help.")
