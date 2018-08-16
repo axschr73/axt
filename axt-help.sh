@@ -116,7 +116,7 @@ else
 		FIND_PATTERN="axt-help-${LAST_SUBCOMMAND}.txt"
 		AXT_FILES=(`eval find ${AXT_PATH} -name ${FIND_PATTERN} -print`)
 		if [[ ${AXT_FILES} ]]; then
-			less -F ${AXT_FILES[0]}
+			less ${AXT_FILES[0]}
 		else
 			echo "AXT ERROR: No help found for${COMMAND}."
 		fi
