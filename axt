@@ -1,8 +1,10 @@
 #!/bin/sh
 
 # setup environment
+OLD_PATH=$(pwd)
 cd $(dirname $0)
 export AXT_PATH=$(pwd)
+cd ${OLD_PATH}
 
 
 # check installed helpers
@@ -10,8 +12,8 @@ command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper
 
 
 # source .axtrc's
-AXT_RCS=$(find ${AXTPATH} -name .axtrc -print)
-for AXT_RC in "${AXT_RCS[@]}"; do
+AXT_RCS=$(find ${AXT_PATH} -name .axtrc -print)
+for AXT_RC in ${AXT_RCS[@]}; do
 	source ${AXT_RC}
 done
 
@@ -27,7 +29,7 @@ fi
 
 # execute full command
 COMMAND="axt-${SUBCOMMAND}.sh"
-FULL_COMMAND=$(find ${AXTPATH} -name ${COMMAND} -print)
+FULL_COMMAND=$(find ${AXT_PATH} -name ${COMMAND} -print)
 
 if [[ ${FULL_COMMAND} ]]; then
 	eval "${FULL_COMMAND} $@"
