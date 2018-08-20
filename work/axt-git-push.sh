@@ -8,7 +8,7 @@ if [[ ! -v AXT_PATH ]]; then
 	exit
 fi
 
-echo "Pushing local branch '${AXT_GIT_LOCAL_BRANCH}' to remote branch 'origin/${AXT_GIT_REMOTE_BRANCH}'"
+echo "Pushing local branch '${AXT_GIT_LOCAL_BRANCH}' to remote branch '${AXT_GIT_REMOTE_BRANCH}'"
 
 git push gerrit HEAD:refs/for/${AXT_GIT_REMOTE_BRANCH_NAME}
 
