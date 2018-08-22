@@ -1,3 +1,6 @@
+# Add all parameters in the format below
+# axt setup will copy them to ~/.axtrc and update/set values
+
 export AXT_BRANCH=master  # AXT branch on github
 
-export AXT_EDITOR=${EDITOR}  # AXT's preferred editor
+AXT_EDITOR=${EDITOR}  # AXT's preferred editor
