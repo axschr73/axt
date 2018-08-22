@@ -18,7 +18,6 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 	IFS=$'\n'
     SRC_PARAMS=( $(grep "=" ${SRC_AXT_RC}) )
 	for SRC_PARAM in ${SRC_PARAMS[@]}; do
-		SRC_PARAM=${SRC_PARAM#"export "}
 		SRC_PARAM_NAME=${SRC_PARAM%%"="*}
 		SRC_PARAM_REST=${SRC_PARAM##*"="}
         SRC_PARAM_VALUE=${SRC_PARAM_REST%%" "*"# "*}         
@@ -29,23 +28,22 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 		else
 			SRC_PARAM_VALUE_QUOTED="FALSE"
 		fi 
+
 		PARAM_NAME=${SRC_PARAM_NAME}
 		PARAM_DEFAULT=${SRC_PARAM_VALUE}
+		PARAM_COMMENT=${SRC_PARAM_COMMENT}
 		if [ -f ${AXT_RC} ]; then
-			echo "~/.axtrc exists"
 		    PREFIX="export ${PARAM_NAME}="
 			AXTRC_PARAM_VALUE=$(grep "${PREFIX}" ${AXT_RC})
-			echo "val: $AXTRC_PARAM_VALUE"
 			if [ ! -z "${AXTRC_PARAM_VALUE}" ]; then
-				echo "'${PREFIX}' found in ~/.axtrc"
 				PARAM_DEFAULT=${AXTRC_PARAM_VALUE#"${PREFIX}"}
 				if [[ ${SRC_PARAM_VALUE_QUOTED} == TRUE ]]; then
 					PARAM_DEFAULT=${PARAM_DEFAULT:1:-1}
 				fi
 			fi
 		fi
+
 		PARAM_VALUE=""
-		PARAM_COMMENT=${SRC_PARAM_COMMENT}
 		if [ -z "${PARAM_DEFAULT}" ]; then
 			while [[ ${PARAM_VALUE} == "" ]]; do
 				echo "${PARAM_COMMENT}"
