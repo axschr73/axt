@@ -6,10 +6,12 @@
 # USAGE:     If not specified, remote branch name will be used. 
 
 # check if we're in AXT environment
-if [[ ! -v AXT_PATH ]]; then
-	echo "Please execute from axt.sh"
+if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
+	echo >&2 "AXT ERROR: Please execute $0 from axt"
 	exit
 fi
+command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT ERROR: axt git remote requires helper 'peco'!"; exit }
+
 
 if (( $# <= 1 )); then
 	NEW_REMOTE_BRANCH=$(git branch -r | tail -n +2 | sed 's/  origin\/*//' | peco)

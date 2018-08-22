@@ -4,8 +4,8 @@
 # USAGE: git branch | log | push | rebase | remote | reset | rebase | setup
 
 # check if we're in AXT environment
-if [[ ! -v AXT_PATH ]]; then
-	echo "Please execute from axt.sh"
+if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
+	echo >&2 "AXT ERROR: Please execute $0 from axt"
 	exit
 fi
 
@@ -13,7 +13,6 @@ fi
 export AXT_GIT_LOCAL_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 export AXT_GIT_REMOTE_BRANCH="$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))"
 export AXT_GIT_REMOTE_BRANCH_NAME=${AXT_GIT_REMOTE_BRANCH##origin/}
-
 
 if (( $# >= 1 )); then
 	COMMAND="axt-git-${1}.sh"
