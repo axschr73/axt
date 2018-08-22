@@ -9,6 +9,7 @@ if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	exit
 fi
 test -v AXT_XXX || echo >&2 "AXT ERROR: \$AXT_XXX not set, run 'axt setup'"; exit
+command -v xyz  >/dev/null 2>&1 || { echo >&2 "AXT ERROR: axt command requires helper 'xyz'!"; exit }
 
 
 <YOUR CODE GOES HERE>
