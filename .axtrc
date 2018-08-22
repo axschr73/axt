@@ -1,7 +1,3 @@
-# AXT environment
+export AXT_BRANCH=master  # AXT branch on github
 
-# the AXT branch on github
-export AXT_BRANCH="home"
-
-# AXT's preferred editor
-export AXT_EDITOR=${EDITOR}
+export AXT_EDITOR=${EDITOR}  # AXT's preferred editor
