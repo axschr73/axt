@@ -7,17 +7,6 @@ export AXT_PATH=$(pwd)
 cd ${OLD_PATH}
 
 
-# check installed helpers
-command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'peco'. Some subcommands might not work without it!"; }
-
-
-# source .axtrc's
-AXT_RCS=$(find ${AXT_PATH} -name .axtrc -print)
-for AXT_RC in ${AXT_RCS[@]}; do
-	source ${AXT_RC}
-done
-
-
 # process subcommand
 SUBCOMMAND=$1
 shift
@@ -25,6 +14,20 @@ shift
 if [[ -z $SUBCOMMAND ]]; then
     SUBCOMMAND="help"
 fi
+
+# source ~/.axtrc
+export AXT_RC="${HOME}/.axtrc"
+
+if [ -f ${AXT_RC} ]; then
+	source ${AXT_RC}
+elif [ "$SUBCOMMAND" != "setup" ] && [ "$SUBCOMMAND" != "help" ]; then
+	echo >&2 "AXT ERROR: ~/.axtrc does not exist, run axt setup!"
+	exit 
+fi
+
+
+# check installed helpers
+command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'peco'. Some subcommands might not work without it!"; }
 
 
 # execute full command
