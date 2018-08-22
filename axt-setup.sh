@@ -13,9 +13,10 @@ echo "# AXT environment" > ${AXTRC_TMP}
 echo "# Do not edit directly! Use axt setup and add new parameters to \$AXT_PATH/.axtrc" >>  ${AXTRC_TMP}
 echo "" >> ${AXTRC_TMP}
 
+IFS=$'\n'
+
 SRC_AXT_RCS=$(find ${AXT_PATH} -name .axtrc -print)
 for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
-	IFS=$'\n'
     SRC_PARAMS=( $(grep "=" ${SRC_AXT_RC}) )
 	for SRC_PARAM in ${SRC_PARAMS[@]}; do
 		SRC_PARAM_NAME=${SRC_PARAM%%"="*}
@@ -66,5 +67,7 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 		echo "" >>  ${AXTRC_TMP}
 	done
 done
+
+unset IFS
 
 mv ${AXTRC_TMP} ${AXT_RC}
