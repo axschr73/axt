@@ -8,6 +8,7 @@ if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	exit
 fi
 
+
 AXTRC_TMP="${AXT_RC}.tmp"
 echo "# AXT environment" > ${AXTRC_TMP}
 echo "# Do not edit directly! Use axt setup and add new parameters to \$AXT_PATH/.axtrc" >>  ${AXTRC_TMP}
