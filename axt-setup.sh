@@ -22,8 +22,8 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 	for SRC_PARAM in ${SRC_PARAMS[@]}; do
 		SRC_PARAM_NAME=${SRC_PARAM%%"="*}
 		SRC_PARAM_REST=${SRC_PARAM##*"="}
-        SRC_PARAM_VALUE=${SRC_PARAM_REST%%" "*"# "*}         
-        SRC_PARAM_COMMENT=${SRC_PARAM_REST##*"# "}         
+    SRC_PARAM_VALUE=${SRC_PARAM_REST%" "*"# "*}         
+    SRC_PARAM_COMMENT=${SRC_PARAM_REST#*"# "}         
 		if [[ ${SRC_PARAM_VALUE:0:1} == \" ]]; then
 			SRC_PARAM_VALUE_QUOTED="TRUE"
 			SRC_PARAM_VALUE="${SRC_PARAM_VALUE:1:-1}"
