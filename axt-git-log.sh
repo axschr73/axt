@@ -7,7 +7,7 @@ if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	echo >&2 "AXT ERROR: Please execute $0 from axt"
 	exit
 fi
-command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT ERROR: axt git log requires helper 'peco'!"; exit }
+command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT ERROR: axt git log requires helper 'peco'!"; exit; }
 
 
 git log --oneline --abbrev-commit | peco
