@@ -8,7 +8,7 @@ AXT needs the following helpers to work (please install before running AXT):
 
 Run axt setup after you've cloned AXT!
 
-
+<code>
 Commands:
   edit   - Edit an existing AXT command or file (see subcommands)
              * bash - Edit ~/.bashrc & re-source
@@ -26,3 +26,5 @@ Commands:
   help   - Print this help text
   update - Update AXT or other components (see subcommands)
              * axt - Update AXT
+</code>
+
