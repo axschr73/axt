@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# HELP: Reset local branch to current remote branch
+# HELP: Rebase local branch on current remote branch
 
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
@@ -17,7 +17,8 @@ if [[ ! -v AXT_GIT_REMOTE_BRANCH ]]; then
 fi
 
 
-echo "Resetting local branch '${AXT_GIT_LOCAL_BRANCH}' to remote branch '${AXT_GIT_REMOTE_BRANCH}"
+echo "Reverting given commit ID in '${AXT_GIT_LOCAL_BRANCH}' on remote branch '${AXT_GIT_REMOTE_BRANCH}'"
 
-git fetch
-git reset --hard ${AXT_GIT_REMOTE_BRANCH}
+git revert ${1}
+git commit --amend --no-edit
+

@@ -5,7 +5,7 @@
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	echo >&2 "AXT ERROR: Please execute $0 from axt"
-	exit
+	exit 1
 fi
 
 
@@ -22,14 +22,14 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 	for SRC_PARAM in ${SRC_PARAMS[@]}; do
 		SRC_PARAM_NAME=${SRC_PARAM%%"="*}
 		SRC_PARAM_REST=${SRC_PARAM##*"="}
-    SRC_PARAM_VALUE=${SRC_PARAM_REST%" "*"# "*}         
-    SRC_PARAM_COMMENT=${SRC_PARAM_REST#*"# "}         
+    SRC_PARAM_VALUE=${SRC_PARAM_REST%" "*"# "*}
+    SRC_PARAM_COMMENT=${SRC_PARAM_REST#*"# "}
 		if [[ ${SRC_PARAM_VALUE:0:1} == \" ]]; then
 			SRC_PARAM_VALUE_QUOTED="TRUE"
 			SRC_PARAM_VALUE="${SRC_PARAM_VALUE:1:-1}"
 		else
 			SRC_PARAM_VALUE_QUOTED="FALSE"
-		fi 
+		fi
 
 		PARAM_NAME=${SRC_PARAM_NAME}
 		PARAM_DEFAULT=${SRC_PARAM_VALUE}
@@ -55,7 +55,7 @@ for SRC_AXT_RC in ${SRC_AXT_RCS[@]}; do
 			echo "${PARAM_COMMENT}  -  <Enter> uses default '${PARAM_DEFAULT}'"
 			read PARAM_VALUE
 			if [ -z "${PARAM_VALUE}" ]; then
-				PARAM_VALUE=${PARAM_DEFAULT}
+				PARAM_VALUE="${PARAM_DEFAULT}"
 			fi
 		fi
 

@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# HELP: Restart linux.
+# HELP: Push local branch to current remote branch
 
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	echo >&2 "AXT ERROR: Please execute $0 from axt"
-	exit
+	exit 1
 fi
 
 
-sudo shutdown -r now
+git push origin main
 

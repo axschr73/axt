@@ -5,7 +5,7 @@
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
 	echo >&2 "AXT ERROR: Please execute $0 from axt"
-	exit
+	exit 1
 fi
 
 
@@ -46,7 +46,7 @@ function print_help
 					local SUBCOMMAND_LEN=${#SUBCOMMAND}
 					SUBCOMMANDS+=("${SUBCOMMAND}")
 					SUBCOMMANDS_HELP+=("${HELP_TEXT}")
-					if (( MAX_SUBCOMMAND_LEN < SUBCOMMAND_LEN )); then	
+					if (( MAX_SUBCOMMAND_LEN < SUBCOMMAND_LEN )); then
 						MAX_SUBCOMMAND_LEN=${SUBCOMMAND_LEN}
 					fi
 				else
@@ -87,7 +87,7 @@ if (( 0 < $# )); then
 		LAST_SUBCOMMAND="${1}"
 		shift
 	done
-else	
+else
 	COMMAND_PREFIX="${COMMAND_PREFIX}-"
 fi
 
@@ -109,7 +109,8 @@ if (( 0 < NUM_SUBCOMMANDS )); then
 				fi
 			fi
 		else
-			echo "AXT ERROR: command '${FIND_PATTERN}'' not found"
+			echo >&2 "AXT ERROR: command '${FIND_PATTERN}'' not found"
+			exit 1
 		fi
 	fi
 else
@@ -119,10 +120,12 @@ else
 		if [[ ${AXT_FILES} ]]; then
 			less ${AXT_FILES[0]}
 		else
-			echo "AXT ERROR: No help found for${COMMAND}."
+			echo >&2 "AXT ERROR: No help found for${COMMAND}."
+			exit 1
 		fi
 	else
 		echo "AXT_ERROR: No help found."
+		exit 1
 	fi
 	exit
 fi

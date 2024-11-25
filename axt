@@ -3,40 +3,52 @@
 # setup environment
 OLD_PATH=$(pwd)
 cd $(dirname $0)
-export AXT_PATH=$(pwd)
+export AXT_PATH="$(realpath $(pwd))"
 cd ${OLD_PATH}
 
-
-# process subcommand
-SUBCOMMAND=$1
-shift
-
-if [[ -z $SUBCOMMAND ]]; then
-    SUBCOMMAND="help"
-fi
 
 # source ~/.axtrc
 export AXT_RC="${HOME}/.axtrc"
 
 if [ -f ${AXT_RC} ]; then
 	source ${AXT_RC}
-elif [ "$SUBCOMMAND" != "setup" ] && [ "$SUBCOMMAND" != "help" ]; then
+elif [[ "$1" != "setup" ]] && [[ "$1" != "help" ]]; then
 	echo >&2 "AXT ERROR: ~/.axtrc does not exist, run axt setup!"
-	exit 
+	exit 1
 fi
-
 
 # check installed helpers
 command -v peco  >/dev/null 2>&1 || { echo >&2 "AXT WARNING: AXT requires helper 'peco'. Some subcommands might not work without it!"; }
 test -v AXT_EDITOR || { echo >&2 "AXT WARNING: \$AXT_EDITOR not set, run 'axt setup'"; }
 
 
-# execute full command
-COMMAND="axt-${SUBCOMMAND}.sh"
-FULL_COMMAND=$(find ${AXT_PATH} -name ${COMMAND} -print)
+# git branches
+export AXT_GIT_LOCAL_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+export AXT_GIT_REMOTE_BRANCH="$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))"
+export AXT_GIT_REMOTE_BRANCH_NAME=${AXT_GIT_REMOTE_BRANCH##origin/}
 
-if [[ ${FULL_COMMAND} ]]; then
-	eval "${FULL_COMMAND} $@"
+
+# search for best-match axt command
+COMMAND_STRING="axt"
+BEST_MATCH=""
+while (( $# > 0 )); do
+	SUBCOMMAND="$1"
+	shift
+	if [[ $SUBCOMMAND =~ ^[a-zA-Z0-9]+$ ]]; then
+		COMMAND_STRING="$COMMAND_STRING-$SUBCOMMAND"
+		FULL_COMMAND=$(find ${AXT_PATH} -name ${COMMAND_STRING}.sh -print)
+		if [[ ${FULL_COMMAND} ]]; then
+			BEST_MATCH="$FULL_COMMAND $@"
+		fi
+	else
+		break
+	fi
+done
+
+if [[ ! -z "$BEST_MATCH" ]]; then
+	eval "$BEST_MATCH"
 else
-	echo "axt: Unknown command '${SUBCOMMAND}'"
+	echo >&2 "AXT ERROR: command '$COMMAND_STRING.sh' not found"
+	exit 1
 fi
+

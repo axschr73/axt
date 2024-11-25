@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# HELP: Reset local branch to current remote branch
+# HELP: View git repository with tig
 
 # check if we're in AXT environment
 if [[ ! -v AXT_PATH ]] || [ -z "${AXT_PATH}" ]; then
@@ -17,7 +17,4 @@ if [[ ! -v AXT_GIT_REMOTE_BRANCH ]]; then
 fi
 
 
-echo "Resetting local branch '${AXT_GIT_LOCAL_BRANCH}' to remote branch '${AXT_GIT_REMOTE_BRANCH}"
-
-git fetch
-git reset --hard ${AXT_GIT_REMOTE_BRANCH}
+tig $@
